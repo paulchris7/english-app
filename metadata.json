@@ -1,0 +1,6 @@
+{
+  "name": "English Learning Platform",
+  "description": "A tailored English learning platform featuring scientific readings, grammar rules, visual vocabulary, and core verbs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
