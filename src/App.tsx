@@ -657,7 +657,7 @@ export default function App() {
   };
 
   const getVerbConjugations = (v: Verb) => {
-    const base = v.base.toLowerCase();
+    const base = v.base.toLowerCase().trim();
     
     let present3rd = base + "s";
     if (base === "do") present3rd = "does";
@@ -671,6 +671,7 @@ export default function App() {
     }
 
     const isBe = base === "be";
+    const presentBase = base === "have" ? "have" : base;
 
     return {
       present: {
@@ -678,32 +679,52 @@ export default function App() {
         formRule: isBe 
           ? "Irregular. I am, He/She/It is, We/You/They are." 
           : `Subject + base form (add -s/-es for 3rd person singular).`,
-        iForm: isBe ? "am" : base,
-        heForm: isBe ? "is" : present3rd,
-        weForm: isBe ? "are" : base,
+        conjugations: [
+          { pronoun: "I", form: isBe ? "am" : presentBase },
+          { pronoun: "You", form: isBe ? "are" : presentBase },
+          { pronoun: "He / She / It", form: isBe ? "is" : present3rd },
+          { pronoun: "We", form: isBe ? "are" : presentBase },
+          { pronoun: "You", form: isBe ? "are" : presentBase },
+          { pronoun: "They", form: isBe ? "are" : presentBase },
+        ]
       },
       past: {
         title: "Past Simple (Completed Past Actions)",
         formRule: isBe 
           ? "Irregular. I/He/She/It was, We/You/They were." 
           : `Subject + Past Simple form (${v.past_simple}).`,
-        iForm: isBe ? "was" : v.past_simple,
-        heForm: isBe ? "was" : v.past_simple,
-        weForm: isBe ? "were" : v.past_simple,
+        conjugations: [
+          { pronoun: "I", form: isBe ? "was" : v.past_simple },
+          { pronoun: "You", form: isBe ? "were" : v.past_simple },
+          { pronoun: "He / She / It", form: isBe ? "was" : v.past_simple },
+          { pronoun: "We", form: isBe ? "were" : v.past_simple },
+          { pronoun: "You", form: isBe ? "were" : v.past_simple },
+          { pronoun: "They", form: isBe ? "were" : v.past_simple },
+        ]
       },
       perfect: {
         title: "Present Perfect (Unspecified/Ongoing Actions)",
         formRule: `Subject + have/has + Past Participle (${v.past_participle}).`,
-        iForm: `have ${v.past_participle}`,
-        heForm: `has ${v.past_participle}`,
-        weForm: `have ${v.past_participle}`,
+        conjugations: [
+          { pronoun: "I", form: `have ${v.past_participle}` },
+          { pronoun: "You", form: `have ${v.past_participle}` },
+          { pronoun: "He / She / It", form: `has ${v.past_participle}` },
+          { pronoun: "We", form: `have ${v.past_participle}` },
+          { pronoun: "You", form: `have ${v.past_participle}` },
+          { pronoun: "They", form: `have ${v.past_participle}` },
+        ]
       },
       future: {
         title: "Future Simple (Future Intentions & Facts)",
         formRule: `Subject + will + base form (${v.base}).`,
-        iForm: `will ${v.base}`,
-        heForm: `will ${v.base}`,
-        weForm: `will ${v.base}`,
+        conjugations: [
+          { pronoun: "I", form: `will ${v.base}` },
+          { pronoun: "You", form: `will ${v.base}` },
+          { pronoun: "He / She / It", form: `will ${v.base}` },
+          { pronoun: "We", form: `will ${v.base}` },
+          { pronoun: "You", form: `will ${v.base}` },
+          { pronoun: "They", form: `will ${v.base}` },
+        ]
       }
     };
   };
@@ -2128,15 +2149,13 @@ export default function App() {
                                               <h5 className="font-display font-bold text-xs text-rose-800 tracking-tight leading-snug">{item.title}</h5>
                                             </div>
                                             <p className="text-[10px] text-slate-400 leading-normal">{item.formRule}</p>
-                                            <div className="space-y-1.5 font-mono text-xs border-t border-rose-100/30 pt-2 bg-white/50 p-2 rounded-xl">
-                                              <div className="flex justify-between text-slate-500">
-                                                <span>I / We / You / They:</span>
-                                                <span className="font-extrabold text-rose-600">{item.iForm}</span>
-                                              </div>
-                                              <div className="flex justify-between text-slate-500">
-                                                <span>He / She / It:</span>
-                                                <span className="font-extrabold text-rose-600">{item.heForm}</span>
-                                              </div>
+                                            <div className="space-y-1 font-mono text-xs border-t border-rose-100/30 pt-2 bg-white/50 p-2 rounded-xl">
+                                              {item.conjugations.map((c: any, idx: number) => (
+                                                <div key={idx} className="flex justify-between text-slate-500 py-0.5 border-b border-rose-100/5 last:border-0">
+                                                  <span>{c.pronoun}</span>
+                                                  <span className="font-extrabold text-rose-600">{c.form}</span>
+                                                </div>
+                                              ))}
                                             </div>
                                           </div>
                                         ))}
